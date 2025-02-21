@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
 
         setTimeout(function startAutoplay() {
             slider.attr('data-autoplay', 'true');
-            
+
             if (typeof et_pb_initialize_slider === "function") {
                 et_pb_initialize_slider();
             }
