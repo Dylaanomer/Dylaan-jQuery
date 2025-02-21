@@ -1,0 +1,27 @@
+<script>
+jQuery(document).ready(function ($) {
+    // Delay function to start the slider after 2 minutes
+    var delayTime = 120000; // 2 minutes in milliseconds
+
+    // Target all Divi sliders
+    $('.et_pb_slider').each(function () {
+        var slider = $(this);
+		
+		// Log to the console that the script is working
+        console.log('Divi Slider Delay Script Loaded');
+
+        // Disable autoplay initially by stopping it (just in case)
+        slider.attr('data-autoplay', 'false');
+        
+        // After the delay, enable autoplay and start the first slide
+        setTimeout(function () {
+            slider.attr('data-autoplay', 'true');  // Reactivate autoplay
+
+            // Trigger the Divi slider autoplay manually
+            if (typeof et_pb_initialize_slider === "function") {
+                et_pb_initialize_slider();  // This will restart the autoplay after the delay
+            }
+        }, delayTime); // 2-minute delay
+    });
+});
+</script>
