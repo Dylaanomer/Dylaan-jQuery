@@ -1,27 +1,34 @@
-<script>
 jQuery(document).ready(function ($) {
-    // Delay function to start the slider after 2 minutes
     var delayTime = 120000; // 2 minutes in milliseconds
+    var intervalTime = 30000; // 30 seconds for autoplay before pausing again
 
-    // Target all Divi sliders
     $('.et_pb_slider').each(function () {
         var slider = $(this);
-		
-		// Log to the console that the script is working
         console.log('Divi Slider Delay Script Loaded');
 
-        // Disable autoplay initially by stopping it (just in case)
+        // Disable autoplay initially
         slider.attr('data-autoplay', 'false');
-        
-        // After the delay, enable autoplay and start the first slide
-        setTimeout(function () {
-            slider.attr('data-autoplay', 'true');  // Reactivate autoplay
 
-            // Trigger the Divi slider autoplay manually
+        setTimeout(function startAutoplay() {
+            slider.attr('data-autoplay', 'true');
+            
             if (typeof et_pb_initialize_slider === "function") {
-                et_pb_initialize_slider();  // This will restart the autoplay after the delay
+                et_pb_initialize_slider();
             }
-        }, delayTime); // 2-minute delay
+
+            // Set interval to pause autoplay every 2 minutes
+            setInterval(function () {
+                slider.attr('data-autoplay', 'false');
+
+                // Restart autoplay after a short interval
+                setTimeout(function () {
+                    slider.attr('data-autoplay', 'true');
+                    if (typeof et_pb_initialize_slider === "function") {
+                        et_pb_initialize_slider();
+                    }
+                }, intervalTime); // Short interval before restarting
+            }, delayTime + intervalTime); // Repeats every 2 minutes + 30 seconds
+
+        }, delayTime); // Initial 2-minute delay
     });
 });
-</script>
