@@ -1,0 +1,14 @@
+{
+    "manifest_version": 3,
+    "name": "Pause Interactions",
+    "version": "1.0",
+    "description": "Pauses interactions on any page for 3 minutes",
+    "permissions": ["scripting", "activeTab"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "host_permissions": ["<all_urls>"],
+    "action": {
+        "default_title": "Pause Interactions"
+    }
+}
