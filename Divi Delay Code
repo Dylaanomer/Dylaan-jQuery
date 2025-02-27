@@ -1,34 +1,36 @@
 jQuery(document).ready(function ($) {
-    var delayTime = 120000; // 2 minutes in milliseconds
-    var intervalTime = 30000; // 30 seconds for autoplay before pausing again
+    var delayTime = 120000; // 2 minutes
+    var intervalTime = 30000; // 30 seconds
 
-    $('.et_pb_slider').each(function () {
-        var slider = $(this);
-        console.log('Divi Slider Delay Script Loaded');
+    function handleSlider() {
+        $('.et_pb_slider').each(function () {
+            var slider = $(this);
 
-        // Disable autoplay initially
-        slider.attr('data-autoplay', 'false');
+            // Force stop initial autoplay
+            slider.attr('data-autoplay', 'false');
+            slider.trigger('stop.et_pb_simple_slider');
 
-        setTimeout(function startAutoplay() {
-            slider.attr('data-autoplay', 'true');
+            setTimeout(function() {
+                // Enable autoplay after delay
+                slider.attr('data-autoplay', 'true');
+                et_pb_simple_slider(slider);
 
-            if (typeof et_pb_initialize_slider === "function") {
-                et_pb_initialize_slider();
-            }
+                setInterval(function() {
+                    // Stop slider
+                    slider.attr('data-autoplay', 'false');
+                    slider.trigger('stop.et_pb_simple_slider');
 
-            // Set interval to pause autoplay every 2 minutes
-            setInterval(function () {
-                slider.attr('data-autoplay', 'false');
+                    setTimeout(function() {
+                        // Restart slider
+                        slider.attr('data-autoplay', 'true');
+                        et_pb_simple_slider(slider);
+                    }, intervalTime);
 
-                // Restart autoplay after a short interval
-                setTimeout(function () {
-                    slider.attr('data-autoplay', 'true');
-                    if (typeof et_pb_initialize_slider === "function") {
-                        et_pb_initialize_slider();
-                    }
-                }, intervalTime); // Short interval before restarting
-            }, delayTime + intervalTime); // Repeats every 2 minutes + 30 seconds
+                }, delayTime + intervalTime);
+            }, delayTime);
+        });
+    }
 
-        }, delayTime); // Initial 2-minute delay
-    });
+    // Run after window load to ensure Divi is fully initialized
+    $(window).load(handleSlider);
 });
