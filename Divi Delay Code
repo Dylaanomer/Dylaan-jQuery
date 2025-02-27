@@ -1,43 +1,29 @@
 jQuery(document).ready(function ($) {
-    var delayTime = 120000; // 2 minutes
-    var intervalTime = 30000; // 30 seconds
+    const delayTime = 180000; // 3 minutes
     
-    console.log('Divi Delay Script Starting');
+    console.log('Divi Delay Script Started');
     
-    $('.et_pb_slider').each(function(index) {
-        var slider = $(this);
-        console.log('Processing Divi Slider:', index);
+    // Target the specific slider
+    const slider = $('.et_pb_slider_0');
+    
+    if (slider.length) {
+        console.log('Target slider found');
         
-        // Get the actual slider instance
-        var sliderInstance = slider.data('et_pb_simple_slider');
-        console.log('Slider Instance:', sliderInstance);
+        // Disable autoplay initially
+        slider.attr('data-auto', 'false');
+        console.log('Initial autoplay disabled');
         
-        // Immediately stop autoplay
-        if (sliderInstance) {
-            sliderInstance.stopAutoplay();
-            console.log('Initial autoplay stopped');
-        }
-        
+        // Wait 3 minutes then enable autoplay
         setTimeout(function() {
-            console.log('Starting first autoplay cycle');
-            if (sliderInstance) {
-                sliderInstance.startAutoplay();
-            }
+            slider.attr('data-auto', 'true');
             
-            setInterval(function() {
-                console.log('Stopping autoplay cycle');
-                if (sliderInstance) {
-                    sliderInstance.stopAutoplay();
-                }
-                
-                setTimeout(function() {
-                    console.log('Restarting autoplay cycle');
-                    if (sliderInstance) {
-                        sliderInstance.startAutoplay();
-                    }
-                }, intervalTime);
-                
-            }, delayTime + intervalTime);
+            // Reinitialize the slider
+            if (typeof et_pb_reinit_waypoint_modules === "function") {
+                et_pb_reinit_waypoint_modules();
+                console.log('Autoplay enabled after 3 minute delay');
+            }
         }, delayTime);
-    });
+    } else {
+        console.log('Target slider not found');
+    }
 });
