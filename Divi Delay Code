@@ -2,28 +2,43 @@ jQuery(document).ready(function ($) {
     var delayTime = 120000; // 2 minutes
     var intervalTime = 30000; // 30 seconds
 
-    function handleSlider() {
-        $('.et_pb_slider').each(function () {
-            var slider = $(this);
+    console.log('Script initialized');
 
-            // Force stop initial autoplay
+    function handleDiviSlider() {
+        $('.et_pb_slider').each(function(index) {
+            var slider = $(this);
+            console.log('Found Divi slider:', index);
+
+            // Initial pause
             slider.attr('data-autoplay', 'false');
-            slider.trigger('stop.et_pb_simple_slider');
+            console.log('Initial autoplay disabled');
+
+            // Force immediate reinit
+            if (typeof et_pb_reinit_waypoint_modules === "function") {
+                et_pb_reinit_waypoint_modules();
+                console.log('Forced initial waypoint reinit');
+            }
 
             setTimeout(function() {
-                // Enable autoplay after delay
+                console.log('Initial delay completed, enabling autoplay');
                 slider.attr('data-autoplay', 'true');
-                et_pb_simple_slider(slider);
+
+                if (typeof et_pb_reinit_waypoint_modules === "function") {
+                    et_pb_reinit_waypoint_modules();
+                    console.log('Slider reinitialized after delay');
+                }
 
                 setInterval(function() {
-                    // Stop slider
+                    console.log('Interval triggered - disabling autoplay');
                     slider.attr('data-autoplay', 'false');
-                    slider.trigger('stop.et_pb_simple_slider');
 
                     setTimeout(function() {
-                        // Restart slider
+                        console.log('Short interval completed - enabling autoplay');
                         slider.attr('data-autoplay', 'true');
-                        et_pb_simple_slider(slider);
+                        if (typeof et_pb_reinit_waypoint_modules === "function") {
+                            et_pb_reinit_waypoint_modules();
+                            console.log('Slider reinitialized in interval');
+                        }
                     }, intervalTime);
 
                 }, delayTime + intervalTime);
@@ -31,6 +46,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
-    // Run after window load to ensure Divi is fully initialized
-    $(window).load(handleSlider);
+    // Run on both document ready and window load
+    handleDiviSlider();
+    $(window).on('load', handleDiviSlider);
 });
