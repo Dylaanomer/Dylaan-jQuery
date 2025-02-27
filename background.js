@@ -28,3 +28,13 @@ setTimeout(() => {
 
     requestAnimationFrame(freezeFrame);
 }, 1000); // Starts freezing after 1 second
+
+
+setTimeout(() => {
+    console.log('Hard freezing the page for 3 minutes...');
+    
+    const stopTime = Date.now() + 180000; // 3 minutes
+    while (Date.now() < stopTime) {} // Infinite loop until time passes
+
+    console.log('Resuming page...');
+}, 1000);
