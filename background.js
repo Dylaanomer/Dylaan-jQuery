@@ -13,6 +13,8 @@ function pauseInteractions() {
 }
 
 
+//SOFT FREEZE
+
 setTimeout(() => {
     console.log('Freezing the page for 3 minutes...');
     
@@ -29,6 +31,7 @@ setTimeout(() => {
     requestAnimationFrame(freezeFrame);
 }, 1000); // Starts freezing after 1 second
 
+//HARD FREEZE
 
 setTimeout(() => {
     console.log('Hard freezing the page for 3 minutes...');
@@ -37,4 +40,14 @@ setTimeout(() => {
     while (Date.now() < stopTime) {} // Infinite loop until time passes
 
     console.log('Resuming page...');
+}, 1000);
+
+//DEBUGGER
+
+setTimeout(() => {
+    console.log("Pausing JavaScript execution for 3 minutes...");
+    debugger; // Pauses execution
+    setTimeout(() => {
+        console.log("Resuming JavaScript execution...");
+    }, 180000); // 3 minutes
 }, 1000);
