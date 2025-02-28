@@ -1,0 +1,7 @@
+let style = document.createElement("style");
+style.innerHTML = `
+    .et_slider_paused .et_pb_slide {
+        animation: none !important;
+    }
+`;
+document.head.appendChild(style);
